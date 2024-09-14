@@ -13,8 +13,10 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    { 
+        return view('pages.user.index', [
+            'users' => User::all(),
+        ]);
     }
 
     /**
