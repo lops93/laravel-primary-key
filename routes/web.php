@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,5 +19,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/send-notification', [App\Http\Controllers\UserController::class, 'sendNotification']);
+Route::resource('users', UserController::class);
 
 require __DIR__.'/auth.php';
