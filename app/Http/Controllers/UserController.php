@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.user.create');
     }
 
     /**
@@ -32,7 +32,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'password' => 'required|string|min:3',
+        ]);
+
+        $record = User::create($validatedData);
+
+        $this->sendNotification($record);
+
+        return redirect('/users')->with('success', 'User created successfully!');
     }
 
     /**
@@ -67,22 +77,11 @@ class UserController extends Controller
         //
     }
 
-    public function sendNotification()
+    public function sendNotification($record)
     {
-        $user= Auth::user() ? Auth::user()->name : 'Unknown';
+        $user = Auth::user();
 
-        // Fetch the user with ID 103
-        $notifiable_id = User::find(101);
+        $user->notify(new RecordCreatedNotification($record, $user->name));
 
-        // Mock a record object to pass to the notification
-        $record = User::factory()->create([
-            'name' => 'test',
-            'email' => 'test@test',
-        ]);
-
-        // Send the notification
-        $notifiable_id->notify(new RecordCreatedNotification($record, $user));
-
-        return response()->json(['message' => 'Notification sent to user 103'], 200);
     }
 }
