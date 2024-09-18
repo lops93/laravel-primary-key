@@ -15,12 +15,12 @@
     <div x-show="dropdownOpen" class="absolute right-0 z-20 mt-2 overflow-hidden bg-white rounded-md shadow-lg" style="width:20rem;">
         <div class="py-2">
             @foreach (auth()->user()->unreadNotifications as $notification)
-                <a href="#" class="flex items-center py-3 pl-4 pr-6 -mx-2 border-b hover:bg-gray-100">
+                <a href="{{ route('notifications.mark', $notification->id) }}?record_id={{ $notification->data['record_id'] }}" class="flex items-center py-3 pl-4 pr-6 -mx-2 border-b hover:bg-gray-100">
                     <img class="object-cover w-8 h-8 mx-1 rounded-full" src="https://moderncat.com/wp-content/uploads/2021/02/NorwegianForestCat-940x640.jpg" alt="avatar">
                     <p class="flex-1 mx-2 text-sm text-gray-600">
                         <span class="font-bold" href="#">{{$notification->data['user']}}</span>
                         {{ $notification->data['action'] }} 
-                        <span class="font-bold text-cyan-800" href="#">{{ $notification->data['name'] }} </span>
+                        <span class="font-bold text-cyan-800" href="#">{{ $notification->data['record_name'] }} </span>
                         {{ $notification->data['result'] }}.
                         {{ $notification->created_at->diffForHumans(['short' => true, 'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE]) }}
                     </p>
