@@ -12,14 +12,16 @@ class RecordCreatedNotification extends Notification
     use Queueable;
     public $record;
     public $user;
-    public $name;
+    public $record_name;
+    public $record_id;
 
     /**
      * Create a new notification instance.
      */
     public function __construct($record, $user)
     {
-        $this->name = $record->name;
+        $this->record_name = $record->name;
+        $this->record_id = $record->id;
         $this->record = $record;
         $this->user = $user;
 
@@ -44,7 +46,8 @@ class RecordCreatedNotification extends Notification
     {
         return [
             'user' => $this->user,
-            'name' => $this->name,
+            'record_name' => $this->record_name,
+            'record_id' => $this->record_id,
             'action' => 'registered',
             'result' => 'successfully',
             'message' => $this->user.' registered '.$this->record->name. ' successfully',
