@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     { 
         return view('pages.user.index', [
-            'users' => User::all(),
+            'users' => User::paginate(10),
         ]);
     }
 
@@ -60,7 +60,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('pages.user.edit', [
+            'user' => User::find($id),
+        ]);
     }
 
     /**
@@ -68,7 +70,15 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+        ]);
+
+        $record = User::find($id);
+        $record->update($validatedData);
+
+        return redirect('/users')->with('success', 'User updated successfully!');
     }
 
     /**
